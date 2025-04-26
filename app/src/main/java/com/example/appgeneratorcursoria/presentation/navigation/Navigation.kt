@@ -13,10 +13,3 @@ sealed class Screen(val route: String, val icon: ImageVector, val label: String)
     data object Profile : Screen("profile", Icons.Default.Person, "Profile")
     data object Settings : Screen("settings", Icons.Default.Settings, "Settings")
 }
-
-val bottomNavItems = listOf(
-    Screen.Home,
-    Screen.Chat,
-    Screen.Profile,
-    Screen.Settings
-) 

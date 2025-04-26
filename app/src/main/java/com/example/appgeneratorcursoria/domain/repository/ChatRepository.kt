@@ -7,4 +7,5 @@ interface ChatRepository {
     fun getAllMessages(): Flow<List<ChatMessage>>
     suspend fun insertMessage(message: ChatMessage)
     suspend fun deleteAllMessages()
+    suspend fun deleteMessage(message: ChatMessage)
 } 

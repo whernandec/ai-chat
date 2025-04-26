@@ -1,6 +1,7 @@
 package com.example.appgeneratorcursoria.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.appgeneratorcursoria.data.local.entity.ChatMessageEntity
@@ -16,4 +17,7 @@ interface ChatMessageDao {
     
     @Query("DELETE FROM chat_messages")
     suspend fun deleteAllMessages()
+
+    @Delete
+    suspend fun deleteMessage(message: ChatMessageEntity)
 } 

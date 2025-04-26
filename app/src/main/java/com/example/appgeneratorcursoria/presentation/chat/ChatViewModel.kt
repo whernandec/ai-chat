@@ -2,99 +2,123 @@ package com.example.appgeneratorcursoria.presentation.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.appgeneratorcursoria.data.remote.DeepseekApi
-import com.example.appgeneratorcursoria.data.remote.DeepseekRequest
-import com.example.appgeneratorcursoria.data.remote.Message
+import com.example.appgeneratorcursoria.domain.model.ChatError
 import com.example.appgeneratorcursoria.domain.model.ChatMessage
 import com.example.appgeneratorcursoria.domain.usecase.DeleteAllMessagesUseCase
+import com.example.appgeneratorcursoria.domain.usecase.DeleteMessageUseCase
 import com.example.appgeneratorcursoria.domain.usecase.GetAllMessagesUseCase
 import com.example.appgeneratorcursoria.domain.usecase.InsertMessageUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.appgeneratorcursoria.domain.usecase.SendMessageUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ChatViewModel @Inject constructor(
-    private val insertMessageUseCase: InsertMessageUseCase,
-    private val deleteAllMessagesUseCase: DeleteAllMessagesUseCase,
+data class ChatUiState(
+    val messages: List<ChatMessage> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: ChatError? = null
+)
+
+class ChatViewModel(
     private val getAllMessagesUseCase: GetAllMessagesUseCase,
-    private val deepseekApi: DeepseekApi
+    private val insertMessageUseCase: InsertMessageUseCase,
+    private val sendMessageUseCase: SendMessageUseCase,
+    private val deleteAllMessagesUseCase: DeleteAllMessagesUseCase,
+    private val deleteMessageUseCase: DeleteMessageUseCase
 ) : ViewModel() {
-    
-    private val _messages = MutableStateFlow<List<ChatMessage>>(emptyList())
-    val messages: StateFlow<List<ChatMessage>> = _messages.asStateFlow()
-    
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-    
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> = _error.asStateFlow()
-    
+
+    private val _uiState = MutableStateFlow(ChatUiState())
+    val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
+
     init {
         loadMessages()
     }
-    
+
     private fun loadMessages() {
         viewModelScope.launch {
-            getAllMessagesUseCase().collect { messages ->
-                _messages.value = messages
+            try {
+                _uiState.update { it.copy(isLoading = true) }
+                getAllMessagesUseCase().collect { messages ->
+                    _uiState.update { 
+                        it.copy(
+                            messages = messages,
+                            isLoading = false
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false,
+                        error = ChatError.UnknownError(e.message ?: "Unknown error")
+                    )
+                }
             }
         }
     }
-    
-    fun sendMessage(message: String) {
+
+    fun sendMessage(content: String) {
+        if (content.isBlank()) return
+
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                // Insert user message
+                _uiState.update { it.copy(isLoading = true) }
+
+                // Create and insert user message
                 val userMessage = ChatMessage(
-                    "User",
-                    content = message,
+                    role = "user",
+                    content = content,
                     timestamp = System.currentTimeMillis()
                 )
                 insertMessageUseCase(userMessage)
 
-                // Prepare the request
-                val request = DeepseekRequest(
-                    messages = _messages.value.map {
-                        Message(
-                            role = it.role,
-                            content = it.content
-                        )
-                    }
-                )
-
-                val response = deepseekApi.sendMessage(
-                    apiKey = "Bearer sk-edcbbea0719f4fcfbe67c49ddbaf62bb",
-                    request = request
-                )
-
-                // Add AI response to the list and persist it
-                val aiMessage = ChatMessage(
-                    "Assistant",
-                    content = response.choices.first().message.content,
-                    timestamp = System.currentTimeMillis()
-                )
+                // Get AI response
+                val aiMessage = sendMessageUseCase(content)
                 insertMessageUseCase(aiMessage)
 
             } catch (e: Exception) {
-                _error.value = e.message ?: "An error occurred"
+                _uiState.update { 
+                    it.copy(error = when (e) {
+                        is ChatError -> e
+                        else -> ChatError.UnknownError(e.message ?: "Unknown error")
+                    })
+                }
             } finally {
-                _isLoading.value = false
+                _uiState.update { it.copy(isLoading = false) }
             }
         }
     }
-    
+
+    fun deleteMessage(message: ChatMessage) {
+        viewModelScope.launch {
+            try {
+                deleteMessageUseCase(message)
+            } catch (e: Exception) {
+                _uiState.update { 
+                    it.copy(error = ChatError.UnknownError(e.message ?: "Failed to delete message"))
+                }
+            }
+        }
+    }
+
     fun clearChat() {
         viewModelScope.launch {
-            deleteAllMessagesUseCase()
+            try {
+                _uiState.update { it.copy(isLoading = true) }
+                deleteAllMessagesUseCase()
+            } catch (e: Exception) {
+                _uiState.update { 
+                    it.copy(error = ChatError.UnknownError(e.message ?: "Unknown error"))
+                }
+            } finally {
+                _uiState.update { it.copy(isLoading = false) }
+            }
         }
     }
 
     fun clearError() {
-        _error.value = null
+        _uiState.update { it.copy(error = null) }
     }
-} 
+}

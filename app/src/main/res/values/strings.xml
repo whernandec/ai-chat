@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AppGeneratorCursorIA</string>
+    <string name="deepseek_api_key">sk-edcbbea0719f4fcfbe67c49ddbaf62bb</string>
 </resources>

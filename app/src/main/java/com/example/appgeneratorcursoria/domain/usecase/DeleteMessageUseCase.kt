@@ -2,10 +2,11 @@ package com.example.appgeneratorcursoria.domain.usecase
 
 import com.example.appgeneratorcursoria.domain.model.ChatMessage
 import com.example.appgeneratorcursoria.domain.repository.ChatRepository
-import kotlinx.coroutines.flow.Flow
 
-class GetAllMessagesUseCase(
+class DeleteMessageUseCase(
     private val repository: ChatRepository
 ) {
-    operator fun invoke(): Flow<List<ChatMessage>> = repository.getAllMessages()
+    suspend operator fun invoke(message: ChatMessage) {
+        repository.deleteMessage(message)
+    }
 } 
