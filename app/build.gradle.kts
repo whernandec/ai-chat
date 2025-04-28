@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
     id("org.jetbrains.kotlin.plugin.parcelize")
     id("org.jetbrains.kotlin.plugin.compose")
 }
@@ -69,7 +69,7 @@ dependencies {
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -82,14 +82,20 @@ dependencies {
     implementation("io.insert-koin:koin-androidx-workmanager:3.5.0")
     implementation("io.insert-koin:koin-androidx-navigation:3.5.0")
 
-    // Testing
+    // JUnit para pruebas unitarias
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
-    testImplementation("io.mockk:mockk:1.13.5")
-    testImplementation("app.cash.turbine:turbine:1.0.0")
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    // Mockito para pruebas unitarias
+    testImplementation("org.mockito:mockito-core:5.17.0")
+
+    // Mockito para pruebas instrumentadas en Android
+    androidTestImplementation("org.mockito:mockito-android:5.17.0")
+
+    // (Opcional) Mockito Inline para mockear métodos estáticos o clases finales
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+
+    // AndroidX Test (si estás utilizando pruebas instrumentadas)
+    androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    testImplementation(kotlin("test"))
 }

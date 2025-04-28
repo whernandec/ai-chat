@@ -22,7 +22,7 @@ val chatModule = module {
 
     single { get<ChatDatabase>().chatMessageDao() }
 
-    single<ChatRepository> { ChatRepositoryImpl(get()) }
+    single<ChatRepository> { ChatRepositoryImpl(get(), get(), get()) }
 
     // API Key configuration
     single { 
@@ -32,7 +32,7 @@ val chatModule = module {
     // Use cases
     single { GetAllMessagesUseCase(get()) }
     single { InsertMessageUseCase(get()) }
-    single { SendMessageUseCase() }
+    single { SendMessageUseCase(get()) }
     single { DeleteAllMessagesUseCase(get()) }
     single { DeleteMessageUseCase(get()) }
 
