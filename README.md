@@ -54,8 +54,9 @@ project-root
 |   |   |-- java/         # Java/Kotlin source code
 |   |   |   |-- di/       # Dependency Injection setup
 |   |   |   |-- data/     # Data layer (repositories, models, etc.)
-|   |   |   |-- ui/       # View layer (activities, fragments, Compose components, etc.)
-|   |   |   |-- viewmodel/ # ViewModel layer
+|   |   |   |-- domain/   # Domain layer (Use Cases) → Contains business logic,  models (entities containing data) and Repository interfaces are included in this layer. At the same time, the business logic of the project is kept in this layer 
+|   |   |   |-- presenter/views/# View layer (activities, fragments, Compose components, etc.) 
+|   |   |   |-- presenter/viewmodel/ # ViewModel layer
 |   |   |-- res/          # Resources (layouts, drawables, etc.)
 |   |-- build.gradle      # Module-level Gradle config
 |-- build.gradle          # Project-level Gradle config
@@ -67,7 +68,7 @@ project-root
 
 ## Dependencies
 - **[Koin](https://insert-koin.io/docs/quickstart/android/)**: Simplifies dependency injection.
--**[OkHttp](https://square.github.io/okhttp/) HTTP is the way modern applications network. It’s how we exchange data & media. Doing
+- **[OkHttp](https://square.github.io/okhttp/) HTTP is the way modern applications network. It’s how we exchange data & media. Doing
 - **[Retrofit](https://square.github.io/retrofit/)**: REST API client.
 - **[Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)**: For managing asynchronous tasks.
 - **[Jetpack Compose](https://developer.android.com/jetpack/compose)**: For building modern UIs.
