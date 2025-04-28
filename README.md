@@ -38,7 +38,7 @@ This project leverages modern Android development tools and frameworks, includin
 ### Installation Steps
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone <https://github.com/whernandec/ai-chat.git>
    ```
 2. Open the project in Android Studio.
 3. Sync the project with Gradle files.
