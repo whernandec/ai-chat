@@ -31,8 +31,13 @@ class SendMessageUseCaseTest {
     @Test
     fun `invoke returns ChatMessage when repository succeeds`(): Unit = runBlocking {
         // Arrange mandamus mensaje a la AI
-        val inputMessage = "Hello, AI!"
-        val expectedChatMessage = ChatMessage(role = "assistant", content = "Hello, human!")
+        val inputMessage = "Hola, AI!"
+
+        val expectedChatMessage = ChatMessage.Builder()
+            .role("assistant")
+            .content("que es una prueba unitaria en android !")
+            .build()
+
 
         `when`(chatRepository.sendMessage(inputMessage)).thenReturn(expectedChatMessage)
 

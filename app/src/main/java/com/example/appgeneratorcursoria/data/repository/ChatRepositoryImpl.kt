@@ -71,8 +71,15 @@ class ChatRepositoryImpl(
                 ?: throw ChatError.ServerError("Empty response from server")
 
             // Save messages
-            val userMessage = ChatMessage(ROLE_USER, message)
-            val assistantMessage = ChatMessage(ROLE_ASSISTANT, aiMessage)
+            val userMessage = ChatMessage.Builder()
+                .role(ROLE_USER)
+                .content(ROLE_USER)
+                .build()
+
+            val assistantMessage = ChatMessage.Builder()
+                .role(ROLE_ASSISTANT)
+                .content(aiMessage)
+                .build()
 
             insertMessage(userMessage)
             insertMessage(assistantMessage)
