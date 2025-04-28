@@ -67,8 +67,8 @@ project-root
 ---
 
 ## Dependencies
-- **[Koin](https://insert-koin.io/docs/quickstart/android/)**: Simplifies dependency injection.
-- **[OkHttp](https://square.github.io/okhttp/) HTTP is the way modern applications network. It’s how we exchange data & media. Doing
+- **[Koin](https://insert-koin.io/docs/quickstart/android/) Simplifies dependency injection.
+- **[OkHttp](https://square.github.io/okhttp/) HTTP is the way modern applications network. It’s how we exchange data & media. Doing.
 - **[Retrofit](https://square.github.io/retrofit/)**: REST API client.
 - **[Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)**: For managing asynchronous tasks.
 - **[Jetpack Compose](https://developer.android.com/jetpack/compose)**: For building modern UIs.
