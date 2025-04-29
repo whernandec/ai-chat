@@ -1,4 +1,4 @@
-package com.example.appgeneratorcursoria.presentation.chat
+package com.example.appgeneratorcursoria.presentation.chat.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.appgeneratorcursoria.domain.model.ChatError
 import com.example.appgeneratorcursoria.domain.model.ChatMessage
+import com.example.appgeneratorcursoria.presentation.chat.viewmodel.ChatViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat

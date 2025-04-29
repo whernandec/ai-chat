@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.appgeneratorcursoria.presentation.chat.ChatScreen
+import com.example.appgeneratorcursoria.presentation.chat.ui.ChatScreen
 import com.example.appgeneratorcursoria.presentation.home.HomeScreen
 import com.example.appgeneratorcursoria.presentation.profile.ProfileScreen
 import com.example.appgeneratorcursoria.presentation.settings.SettingsScreen

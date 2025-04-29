@@ -1,4 +1,4 @@
-package com.example.appgeneratorcursoria.presentation.chat
+package com.example.appgeneratorcursoria.presentation.chat.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -6,7 +6,7 @@ import com.example.appgeneratorcursoria.data.local.database.ChatDatabase
 import com.example.appgeneratorcursoria.data.repository.ChatRepositoryImpl
 import com.example.appgeneratorcursoria.domain.repository.ChatRepository
 import com.example.appgeneratorcursoria.domain.usecase.*
-import com.example.appgeneratorcursoria.presentation.chat.ChatViewModel
+import com.example.appgeneratorcursoria.presentation.chat.viewmodel.ChatViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
